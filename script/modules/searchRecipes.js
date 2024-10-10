@@ -1,5 +1,6 @@
 
 /**
+ * This is version 1 of the search algorithm, the one using native loops.
  * Search function that filters recipes based on the userinput
  * @param {string} query - The search string entered by the user
  * @param {Array} recipes - The array recipes fetch from database
@@ -12,26 +13,36 @@ export default function searchRecipes(query, recipes) {
 
     if (query.length >= 3) {
 
-        let filteredRecipes = recipes.filter(recipe => {
-            const titleMatches = recipe.name.toLowerCase().includes(query.toLowerCase());
+        let filteredRecipes = [];
+
+        for (let i = 0; i < recipes.length; i++) {
+            let recipe = recipes[i];
+            let titleMatches = recipe.name.toLowerCase().includes(query.toLowerCase());
+
             if (titleMatches) {
-                return true
+                filteredRecipes.push(recipe);
+                continue;
             }
 
-            const ingredientMatches = recipe.ingredients.some(ingredientObj =>
-                ingredientObj.ingredient.toLowerCase().includes(query.toLowerCase())
-            );
+            let ingredientMatches = false;
+            for (let j = 0; j < recipe.ingredients.length; j++) {
+                let ingredient = recipe.ingredients[j].ingredient.toLowerCase();
+                if (ingredient.includes(query.toLowerCase())) {
+                    ingredientMatches = true;
+                    break;
+                }
+            }
+
             if (ingredientMatches) {
-                return true
+                filteredRecipes.push(recipe);
+                continue;
             }
 
-            const descriptionMatches = recipe.description.toLowerCase().includes(query.toLowerCase());
+            let descriptionMatches = recipe.description.toLowerCase().includes(query.toLowerCase());
             if (descriptionMatches) {
-                return true
+                filteredRecipes.push(recipe);
             }
-            return false
-
-        });
+        }
 
         return advancedSearchField(filteredRecipes);
 
@@ -39,6 +50,4 @@ export default function searchRecipes(query, recipes) {
         return advancedSearchField(recipes);
     }
 
-
 }
-
