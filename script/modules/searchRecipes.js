@@ -1,5 +1,6 @@
 
 /**
+ * This is version 2 of the search algorithm, the one using Array object methods.
  * Search function that filters recipes based on the userinput
  * @param {string} query - The search string entered by the user
  * @param {Array} recipes - The array recipes fetch from database
